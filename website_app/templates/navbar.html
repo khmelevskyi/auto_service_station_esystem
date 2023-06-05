@@ -1,0 +1,42 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #1c4651;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/" style="color:rgba(255, 255, 255, 0.8); font-family: 'Catamaran', sans-serif;">
+            <img src="{% static 'img/logoResized.png' %}" width="30" height="30" class="d-inline-block align-text-center">
+            ServiceStation CRUD
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav ml-auto mb-1 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/show/clients">Клієнти</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/show/masters">Майстри</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/show/responsibles">Відповідальні</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/show/vehicles">Автомобілі</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/show/warrantiescards">Гарантійні талони</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/show/repairparts">Запчастини</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/show/providedservices">Послуги до надання</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/show/repairsessions">Сеанси ремонту</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/show/repairsessionsrepairparts">Запчастини до ремонтів</a>
+                </li>
+        </div>
+    </div>
+</nav>

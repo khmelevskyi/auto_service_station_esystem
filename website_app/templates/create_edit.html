@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load custom_tags %}
+{% load widget_tweaks %}
+
+
+    <form method="POST" novalidate class="m-4">
+        {% csrf_token %}
+
+        {% for hidden_field in form.hidden_fields %}
+            {{ hidden_field }}
+        {% endfor %}
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {{ form.media }}
+        {% for field in form.visible_fields %}
+            <div class="form-group m-4">
+                {{ field.label_tag }}
+
+                {% if form.is_bound %}
+                    {% if field.errors %}
+                        {% render_field field class+="is-invalid" placeholder=field.name %}
+                        {% for error in field.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {% render_field field class+="is-valid" placeholder=field.name %}
+                    {% endif %}
+                {% else %}
+                    {% render_field field placeholder=field.name %}
+                {% endif %}
+
+                {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary m-4">Submit</button>
+    </form>
+
+{% endblock %}
+
+</body>  
+</html> 
