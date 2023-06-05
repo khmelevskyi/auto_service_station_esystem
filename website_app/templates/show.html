@@ -26,8 +26,8 @@
                 {% endfor %}
                     <td>
                         {% if instance.model == 'website_app.repairsessionsrepairparts' %}
-                            <a href="/edit/{{ instance.model | remove_appname_word }}/{{ instance.pk }}+{{instance.fields.repair_part | remove_extra_repair_part_id}}"><span class="glyphicon glyphicon-pencil" >Edit</span></a>  
-                            <a href="/delete/{{ instance.model | remove_appname_word }}/{{ instance.pk }}+{{instance.fields.repair_part | remove_extra_repair_part_id}}">Delete</a>
+                            <a href="/edit/{{ instance.model | remove_appname_word }}/{{ instance.pk }}+{{instance.fields.repair_part | remove_extra_repair_session_or_part_id}}"><span class="glyphicon glyphicon-pencil" >Edit</span></a>  
+                            <a href="/delete/{{ instance.model | remove_appname_word }}/{{ instance.pk }}+{{instance.fields.repair_part | remove_extra_repair_session_or_part_id}}">Delete</a>
                         {% else %}
                             <a href="/edit/{{ instance.model | remove_appname_word }}/{{ instance.pk }}"><span class="glyphicon glyphicon-pencil" >Edit</span></a>  
                             <a href="/delete/{{ instance.model | remove_appname_word }}/{{ instance.pk }}">Delete</a>
@@ -40,7 +40,9 @@
 </table>
 <br>  
 <br>
-<center><a href="/create/{{ data.0.model | remove_appname_word }}" class="btn btn-primary">Add New Record</a></center>
+{% if data.0.model != 'website_app.repairsessionsrepairparts' %}
+    <center><a href="/create/{{ data.0.model | remove_appname_word }}" class="btn btn-primary">Add New Record</a></center>
+{% endif %}
 
 
 {% endblock %}

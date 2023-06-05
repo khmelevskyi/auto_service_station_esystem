@@ -1,4 +1,5 @@
 from django.db import models
+from viewflow.fields import CompositeKey
 
 
 class Clients(models.Model):
@@ -137,7 +138,11 @@ class Repairsessions(models.Model):
 
     responsible = models.ForeignKey(Responsibles, on_delete=models.PROTECT, help_text="Оберіть один з варіантів")
     master = models.ForeignKey(Masters, on_delete=models.PROTECT, help_text="Оберіть один з варіантів")
-    # repair_parts = models.ManyToManyField(Repairparts, through='RepairsessionsRepairparts', help_text="Оберіть один або більше варантів")
+    repair_parts = models.ManyToManyField(
+        Repairparts,
+        through='RepairsessionsRepairparts',
+        help_text="Оберіть один або більше варантів (Потрібно зажати Ctrl або Cmd при натисканні на обʼєкт для вибору декількох варіантів) Обрати кількість запчастин для сеансу можно у вкладці 'Використання запчастин у ремонтах'"
+    )
     provided_services = models.ManyToManyField(
         Providedservices,
         through='RepairsessionsProvidedservices',
@@ -165,14 +170,25 @@ class RepairsessionsProvidedservices(models.Model):
     class Meta:
         db_table = 'repairsessions_providedservices'
         unique_together = (('repair_session_id', 'provided_service_id'),)
+        ordering = ['repair_session_id', 'provided_service_id']
 
 
 class RepairsessionsRepairparts(models.Model):
-    repair_session = models.OneToOneField(Repairsessions, on_delete=models.PROTECT, primary_key=True)  # The composite primary key (repair_session_id, repair_part_id) found, that is not supported. The first column is selected.
-    repair_part = models.ForeignKey(Repairparts, on_delete=models.PROTECT)
-    amount = models.IntegerField()
+    repair_session = models.OneToOneField( # The composite primary key (repair_session_id, repair_part_id) found, that is not supported. The first column is selected.
+        Repairsessions,
+        on_delete=models.CASCADE,
+        primary_key=True,
+        help_text="Ви не можете змінювати Сеанс ремонту через цю вкладку. Щоб це зробити, потрібно перейти до вкладки 'Сеанси ремонту' та зробити потрібні зміни там"
+    )
+    repair_part = models.ForeignKey(
+        Repairparts,
+        on_delete=models.PROTECT,
+        help_text="Ви не можете змінювати Запчастину через цю вкладку. Щоб це зробити, потрібно перейти до вкладки 'Сеанси ремонту' та зробити потрібні зміни там"
+        )
+    amount = models.IntegerField(default=0)
 
     class Meta:
         db_table = 'repairsessions_repairparts'
         unique_together = (('repair_session_id', 'repair_part_id'),)
+        ordering = ['repair_session_id', 'repair_part_id']
 

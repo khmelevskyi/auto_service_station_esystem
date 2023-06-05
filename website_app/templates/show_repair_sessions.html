@@ -5,14 +5,14 @@
 <br>
 
 
-<table class="table table-striped table-bordered table-sm">  
+<table class="table table-striped table-bordered table-sm text-small" style="font-size:0.8rem!important">  
     <thead class="thead-dark">
         <tr>
             {% for field_name, field_value in data.0.items %}
                 <th>{{ field_name }}</th>
             {% endfor %}
         </tr>
-    </thead>  
+    </thead>
     <tbody>
         {% for instance in data %}
             <tr>
@@ -23,7 +23,7 @@
                             {{ nested_field_value }} |
                         {% endfor %}
                         </td>
-                    {% elif field_name == "provided_services" %}
+                    {% elif field_name == "provided_services" or field_name == "repair_parts" %}
                         <td>
                             {% for nested_instance in field_value %}
                                 {% for nested_nested_field_name, nested_nested_field_value in nested_instance.items %}

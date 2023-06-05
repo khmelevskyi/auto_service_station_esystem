@@ -85,7 +85,10 @@ def edit(request, table_name_arg, id):
         obj_form_name = forms_dict[table_name_arg]
         obj_form: forms.ModelForm = obj_form_name(request.POST, instance = obj)
         if obj_form.is_valid():
-            obj_form.save()
+            if table_name_arg == "repairsessionsrepairparts":
+                obj_form.custom_save()
+            else:
+                obj_form.save()
             messages.add_message(request, messages.SUCCESS, "Обʼєкт змінено успішно.")
             return redirect(f"/show/{table_name_arg}")
     else:

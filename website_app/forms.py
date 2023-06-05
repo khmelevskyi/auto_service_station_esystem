@@ -1,6 +1,7 @@
 from django import forms
 from website_app.models import *
 from bootstrap_datepicker_plus.widgets import DateTimePickerInput
+from django.db import connection
 
 class ClientsForm(forms.ModelForm):
     class Meta:
@@ -157,7 +158,6 @@ class RepairsessionsForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(RepairsessionsForm, self).__init__(*args, **kwargs)
-        # self.fields['order_number'].widget.attrs['class'] = 'form-control'
         self.fields['malfunctions'].widget.attrs['class'] = 'form-control'
         self.fields['order_comment'].widget.attrs['class'] = 'form-control'
         self.fields['total_sum'].widget.attrs['class'] = 'form-control'
@@ -166,12 +166,11 @@ class RepairsessionsForm(forms.ModelForm):
         self.fields['vehicle'].widget.attrs['class'] = 'form-control form-select'
         self.fields['responsible'].widget.attrs['class'] = 'form-control form-select'
         self.fields['master'].widget.attrs['class'] = 'form-control form-select'
-        # self.fields['repair_parts'].widget.attrs['class'] = 'form-control'
+        self.fields['repair_parts'].widget.attrs['class'] = 'form-control'
         self.fields['provided_services'].widget.attrs['class'] = 'form-control'
     
     def custom_save(self, commit=True):
         instance = super(RepairsessionsForm, self).save(commit=False)
-        print(instance.__dict__)
         instance.id = Repairsessions.objects.latest('id').id + 1
         instance.order_number = f"00{instance.id}"
         if commit:
@@ -187,6 +186,22 @@ class RepairsessionsRepairpartsForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(RepairsessionsRepairpartsForm, self).__init__(*args, **kwargs)
-        self.fields['repair_session'].widget.attrs['class'] = 'form-control form-select'
-        self.fields['repair_part'].widget.attrs['class'] = 'form-control form-select'
+        self.fields['repair_session'].widget.attrs['class'] = 'form-control'
+        self.fields['repair_part'].widget.attrs['class'] = 'form-control'
+        self.fields['repair_session'].disabled = True
+        self.fields['repair_part'].disabled = True
         self.fields['amount'].widget.attrs['class'] = 'form-control'
+    
+    def custom_save(self):
+        instance = super(RepairsessionsRepairpartsForm, self).save(commit=False)
+        repair_session_id = instance.repair_session_id
+        repair_part_id = instance.repair_part_id
+        amount = instance.amount
+        cursor=connection.cursor()
+        cursor.execute(f'UPDATE "repairsessions_repairparts" SET "amount" = {amount} '\
+                                f'WHERE "repairsessions_repairparts"."repair_session_id" = {repair_session_id} '\
+                                f'AND "repairsessions_repairparts"."repair_part_id" = {repair_part_id}')
+        return instance
+
+"""'UPDATE "repairsessions_repairparts" SET "repair_part_id" = %s, "amount" = %s '
+ 'WHERE "repairsessions_repairparts"."repair_session_id" = %s'"""

@@ -7,6 +7,6 @@ register = template.Library()
 def remove_appname_word(value):
     return value.replace("website_app.","")
 
-@register.filter(name="remove_extra_repair_part_id")
-def remove_extra_repair_part_id(value):
+@register.filter(name="remove_extra_repair_session_or_part_id")
+def remove_extra_repair_session_or_part_id(value):
     return value.split(" | ")[0]
