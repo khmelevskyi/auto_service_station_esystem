@@ -37,8 +37,8 @@
                     {% endif %}
                 {% endfor %}
                     <td>
-                        <a href="/edit/repairsessions/{{ instance.id }}"><span class="glyphicon glyphicon-pencil" >Edit</span></a>  
-                        <a href="/delete/repairsessions/{{ instance.id }}">Delete</a>
+                        <a href="/edit/repairsessions/{{ instance.id }}"><span class="fas fa-edit link-warning mx-4"> Edit </span></a>  
+                        <a href="/delete/repairsessions/{{ instance.id }}"><span class="fas fa-trash-alt link-danger mx-4"> Delete </span></a>
                     </td>  
             </tr>
         {% endfor %}

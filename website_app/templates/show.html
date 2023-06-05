@@ -26,11 +26,11 @@
                 {% endfor %}
                     <td>
                         {% if instance.model == 'website_app.repairsessionsrepairparts' %}
-                            <a href="/edit/{{ instance.model | remove_appname_word }}/{{ instance.pk }}+{{instance.fields.repair_part | remove_extra_repair_session_or_part_id}}"><span class="glyphicon glyphicon-pencil" >Edit</span></a>  
-                            <a href="/delete/{{ instance.model | remove_appname_word }}/{{ instance.pk }}+{{instance.fields.repair_part | remove_extra_repair_session_or_part_id}}">Delete</a>
+                            <a href="/edit/{{ instance.model | remove_appname_word }}/{{ instance.pk }}+{{instance.fields.repair_part | remove_extra_repair_session_or_part_id}}"><span class="fas fa-edit link-warning mx-4"> Edit </span></a>  
+                            <a href="/delete/{{ instance.model | remove_appname_word }}/{{ instance.pk }}+{{instance.fields.repair_part | remove_extra_repair_session_or_part_id}}"><span class="fas fa-trash-alt link-danger mx-4"> Delete </span></a>
                         {% else %}
-                            <a href="/edit/{{ instance.model | remove_appname_word }}/{{ instance.pk }}"><span class="glyphicon glyphicon-pencil" >Edit</span></a>  
-                            <a href="/delete/{{ instance.model | remove_appname_word }}/{{ instance.pk }}">Delete</a>
+                            <a href="/edit/{{ instance.model | remove_appname_word }}/{{ instance.pk }}"><span class="fas fa-edit link-warning mx-4"> Edit </span></a>  
+                            <a href="/delete/{{ instance.model | remove_appname_word }}/{{ instance.pk }}"><span class="fas fa-trash-alt link-danger mx-4"> Delete </span></a>
                         {% endif %}
                     </td>  
             </tr>
