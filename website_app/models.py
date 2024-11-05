@@ -35,10 +35,16 @@ class Masters(models.Model):
 
 
 class Providedservices(models.Model):
+    DIFFICULTY_CHOICES = [
+        ('легко', 'Легко'),
+        ('середнє', 'Середнє'),
+        ('складно', 'Складно'),
+    ]
+
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=50)
     category = models.CharField(max_length=50)
-    difficulty = models.CharField(max_length=50)
+    difficulty = models.CharField(max_length=50, choices=DIFFICULTY_CHOICES)
 
     class Meta:
         db_table = 'providedservices'
@@ -176,13 +182,13 @@ class RepairsessionsProvidedservices(models.Model):
 class RepairsessionsRepairparts(models.Model):
     repair_session = models.OneToOneField( # The composite primary key (repair_session_id, repair_part_id) found, that is not supported. The first column is selected.
         Repairsessions,
-        on_delete=models.CASCADE,
+        on_delete=models.CASCADE, # RepairsessionsRepairparts will be deleted if Repairsessions is deleted
         primary_key=True,
         help_text="Ви не можете змінювати Сеанс ремонту через цю вкладку. Щоб це зробити, потрібно перейти до вкладки 'Сеанси ремонту' та зробити потрібні зміни там"
     )
     repair_part = models.ForeignKey(
         Repairparts,
-        on_delete=models.PROTECT,
+        on_delete=models.PROTECT, # RepairsessionsRepairparts will NOT be deleted if try to delete Repairparts
         help_text="Ви не можете змінювати Запчастину через цю вкладку. Щоб це зробити, потрібно перейти до вкладки 'Сеанси ремонту' та зробити потрібні зміни там"
         )
     amount = models.IntegerField(default=0)

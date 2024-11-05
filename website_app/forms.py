@@ -136,7 +136,7 @@ class ProvidedservicesForm(forms.ModelForm):
         super(ProvidedservicesForm, self).__init__(*args, **kwargs)
         self.fields['name'].widget.attrs['class'] = 'form-control'
         self.fields['category'].widget.attrs['class'] = 'form-control'
-        self.fields['difficulty'].widget.attrs['class'] = 'form-control'
+        self.fields['difficulty'].widget.attrs['class'] = 'form-control form-select'
     
     def custom_save(self, commit=True):
         instance = super(ProvidedservicesForm, self).save(commit=False)

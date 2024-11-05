@@ -5,8 +5,8 @@ from django.core import serializers
 from django.db.models.deletion import ProtectedError
 from django.contrib import messages
 from rest_framework import serializers as rest_serializers
+from django.http import JsonResponse, Http404
 
-# Create your views here.
 
 models_dict = {
     "clients": Clients,
@@ -37,26 +37,27 @@ def main(request):
     return render(request, "index.html")
 
 
-class RepairSessionsSerializer(rest_serializers.ModelSerializer):
+class DynamicModelSerializer(rest_serializers.ModelSerializer):
+    def __init__(self, *args, **kwargs):
+        model = kwargs.pop("model", None)
+        super().__init__(*args, **kwargs)
+        if model:
+            self.Meta.model = model
     class Meta:
-        model = Repairsessions
+        model = None
         fields = "__all__"
         depth = 1
+
 
 
 def show(request, table_name_arg):
     model_obj_name: models.Model = models_dict[table_name_arg]
     objs = model_obj_name.objects.all()
 
-    if table_name_arg == "repairsessions":
-        serializer = RepairSessionsSerializer(objs, many=True)  # Create an instance of the serializer
-        data = serializer.data  # Serialize the queryset
-        print(data)
-        return render(request, "show_repair_sessions.html", context={'data': data})
-    else:
-        data = serializers.serialize( "python", objs, use_natural_foreign_keys=True)
-        print(data)
-        return render(request, "show.html", context={'data': data})
+    serializer = DynamicModelSerializer(objs, many=True, model=model_obj_name)
+    data = serializer.data  # Serialize the queryset
+    print(data)
+    return render(request, "show_objs.html", context={'data': data, 'table_name': table_name_arg})
 
 
 def create(request, table_name_arg):
@@ -112,3 +113,29 @@ def destroy(request, table_name_arg, id):
         messages.add_message(request, messages.ERROR, f"Не вдалося видалити обʼєкт. Причина: {str(err)}")
     
     return redirect(f"/show/{table_name_arg}")
+
+
+def show_api(request, table_name_arg, id=None):
+    # Retrieve the model based on `table_name_arg`
+    model_obj_name = models_dict.get(table_name_arg)
+    if model_obj_name is None:
+        raise Http404("Model not found")
+
+    # Check if an ID is provided
+    if id is None:
+        # No ID provided: serialize all objects
+        objs = model_obj_name.objects.all()
+        serializer = DynamicModelSerializer(objs, many=True, model=model_obj_name)
+        data = serializer.data  # Serialize the queryset
+    else:
+        # ID provided: serialize a single object
+        try:
+            obj = model_obj_name.objects.get(id=id)
+        except model_obj_name.DoesNotExist:
+            raise Http404("Object not found")
+        
+        serializer = DynamicModelSerializer(obj, model=model_obj_name)
+        data = serializer.data  # Serialize the queryset
+
+    # Return JSON response
+    return JsonResponse(data, safe=False)

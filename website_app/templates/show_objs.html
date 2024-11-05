@@ -2,7 +2,7 @@
 {% block content %}
 {% load custom_tags %}
 
-<h2>Repair Sessions</h2>
+<h2>{{ table_name }}</h2>
 <br>
 
 <table class="table table-striped table-bordered table-sm text-small" style="font-size:0.8rem!important">  
@@ -17,7 +17,7 @@
         {% for instance in data %}
             <tr>
                 {% for field_name, field_value in instance.items %}
-                    {% if field_name == "vehicle" or field_name == "responsible" or field_name == "master" %}
+                    {% if field_name == "vehicle" or field_name == "responsible" or field_name == "master" or field_name == "client" or field_name == "provided_service" or field_name == "repair_part" %}
                         <td>
                         {% for nested_field_name, nested_field_value in field_value.items %}
                             {{ nested_field_value }} |
@@ -37,8 +37,13 @@
                     {% endif %}
                 {% endfor %}
                     <td>
-                        <a href="/edit/repairsessions/{{ instance.id }}"><span class="fas fa-edit link-warning mx-4"> Edit </span></a>  
-                        <a href="/delete/repairsessions/{{ instance.id }}"><span class="fas fa-trash-alt link-danger mx-4"> Delete </span></a>
+                        {% if table_name == 'repairsessionsrepairparts' %}
+                            <a href="/edit/{{ table_name }}/{{ instance.repair_session }}+{{ instance.repair_part.id }}"><span class="fas fa-edit link-warning mx-4"> Edit </span></a>  
+                            <a href="/delete/{{ table_name }}/{{ instance.repair_session }}+{{ instance.repair_part.id }}"><span class="fas fa-trash-alt link-danger mx-4"> Delete </span></a>
+                        {% else %}
+                            <a href="/edit/{{ table_name }}/{{ instance.id }}"><span class="fas fa-edit link-warning mx-4"> Edit </span></a>  
+                            <a href="/delete/{{ table_name }}/{{ instance.id }}"><span class="fas fa-trash-alt link-danger mx-4"> Delete </span></a>
+                        {% endif %}
                     </td>  
             </tr>
         {% endfor %}
@@ -47,7 +52,7 @@
 </table>
 <br>  
 <br>
-<center><a href="/create/repairsessions" class="btn btn-primary">Add New Record</a></center>
+<center><a href="/create/{{ table_name }}" class="btn btn-primary">Add New Record</a></center>
 
 
 {% endblock %}

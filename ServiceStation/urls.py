@@ -24,5 +24,8 @@ urlpatterns = [
     path('show/<table_name_arg>',views.show),
     path('create/<table_name_arg>', views.create),  
     path('edit/<table_name_arg>/<id>', views.edit),
-    path('delete/<table_name_arg>/<id>', views.destroy),  
+    path('delete/<table_name_arg>/<id>', views.destroy),
+
+    path('api/<table_name_arg>', views.show_api),
+    path('api/<table_name_arg>/<id>', views.show_api)
 ]  
