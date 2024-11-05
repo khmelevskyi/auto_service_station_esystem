@@ -1,5 +1,4 @@
 from django.db import models
-from viewflow.fields import CompositeKey
 
 
 class Clients(models.Model):

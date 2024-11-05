@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from website_app.models import *
 from website_app.forms import *
-from django.core import serializers
 from django.db.models.deletion import ProtectedError
 from django.contrib import messages
 from rest_framework import serializers as rest_serializers
