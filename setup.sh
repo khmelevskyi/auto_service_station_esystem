@@ -9,10 +9,10 @@ rm -rf venv
 
 echo -e "\n${RED}Creating new virtual environment${ENDCOLOR}\n"
 python3 -m pip install virtualenv
-python3 -m venv venv
+python3 -m venv .venv
 
 echo -e "\n${RED}Activating environment and upgrading pip${ENDCOLOR}\n"
-. venv/bin/activate
+source .venv/bin/activate
 pip install --upgrade pip
 
 echo -e "\n${RED}Installing packages${ENDCOLOR}\n"
