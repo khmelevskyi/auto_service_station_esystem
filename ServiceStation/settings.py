@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     # 'bootstrap3',
     # 'bootstrap4',
     'widget_tweaks',
-    'website_app'
+    'website_app',
+    'graphene_django'
 ]
 
 MIDDLEWARE = [
@@ -88,6 +89,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ServiceStation.wsgi.application'
 
+GRAPHENE = {
+    "SCHEMA": "website_app.schema.schema"
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

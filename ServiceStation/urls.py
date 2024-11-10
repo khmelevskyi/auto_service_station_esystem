@@ -16,7 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin  
 from django.urls import path  
-from website_app import views  
+from website_app import views
+
+from django.views.decorators.csrf import csrf_exempt
+from graphene_django.views import GraphQLView
 
 urlpatterns = [  
     path('admin/', admin.site.urls),
@@ -27,5 +30,7 @@ urlpatterns = [
     path('delete/<table_name_arg>/<id>', views.destroy),
 
     path('api/<table_name_arg>', views.show_api),
-    path('api/<table_name_arg>/<id>', views.show_api)
+    path('api/<table_name_arg>/<id>', views.show_api),
+
+    path("graphql", csrf_exempt(GraphQLView.as_view(graphiql=True)))
 ]  
